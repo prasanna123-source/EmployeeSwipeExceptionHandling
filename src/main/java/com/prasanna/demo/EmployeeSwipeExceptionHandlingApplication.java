@@ -9,5 +9,4 @@ public class EmployeeSwipeExceptionHandlingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeSwipeExceptionHandlingApplication.class, args);
 	}
-
 }
