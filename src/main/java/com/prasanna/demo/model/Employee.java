@@ -1,21 +1,29 @@
 package com.prasanna.demo.model;
 
-import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name = "employee")
 public class Employee {	
 	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	String empId;
-	String empName;
-	String swipeIn;
-	String swipeOut;
-	Date createDate;
-	String locationName;
+	String empName;	
+	
+	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY,
+          cascade = CascadeType.ALL)
+    private Set<EmployeeSwipeActivity> employeeActivities;
+		
 	public String getEmpId() {
 		return empId;
 	}
@@ -28,34 +36,12 @@ public class Employee {
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
-	public String getSwipeIn() {
-		return swipeIn;
+		
+	public Set<EmployeeSwipeActivity> getEmployeeActivities() {
+		return employeeActivities;
 	}
-	public void setSwipeIn(String swipeIn) {
-		this.swipeIn = swipeIn;
-	}
-	public String getSwipeOut() {
-		return swipeOut;
-	}
-	public void setSwipeOut(String swipeOut) {
-		this.swipeOut = swipeOut;
-	}
-	public Date getCreateDate() {
-		return createDate;
-	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	public String getLocationName() {
-		return locationName;
-	}
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
-	@Override
-	public String toString() {
-		return "EmployeeBean [empId=" + empId + ", empName=" + empName + ", swipeIn=" + swipeIn + ", swipeOut="
-				+ swipeOut + ", createDate=" + createDate + ", locationName=" + locationName + "]";
+	public void setEmployeeActivities(Set<EmployeeSwipeActivity> employeeActivities) {
+		this.employeeActivities = employeeActivities;
 	}
 	public Employee() {		
 		// TODO Auto-generated constructor stub

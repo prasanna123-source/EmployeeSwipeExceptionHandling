@@ -17,26 +17,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prasanna.demo.ExceptionHandler.CustomException;
-import com.prasanna.demo.dao.EmployeeDaoImpl;
+import com.prasanna.demo.dao.EmployeeSwipeDaoImpl;
 import com.prasanna.demo.model.Employee;
 
 @RestController
 public class EmployeeController {
 
 	@Autowired
-	EmployeeDaoImpl employeeDaoRef;
-
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	EmployeeSwipeDaoImpl employeeDaoRef;
+    
+	
 	
 	@PostMapping(value = "/saveEmployee")
-	public int save(@ModelAttribute("employee") Employee emp) {		  
+	public Employee save(@ModelAttribute("employee") Employee emp) {		  
 		 return employeeDaoRef.saveEmployee(emp);    
 	}
   
 	@GetMapping(value = "/getEmployees")
 	public List<Employee> listEmployees(Model model) {
-		List<Employee> empList = employeeDaoRef.listEmployeess();
+		List<Employee> empList = employeeDaoRef.getAllEmployees();
 		if (!empList.isEmpty()) {
 			model.addAttribute("employees", empList);
 		} else {
@@ -46,30 +45,30 @@ public class EmployeeController {
 	}
 
 	@GetMapping(value = "/getEmployeeByID/{empId}")
-	public Employee getEmployeeById(@PathVariable(name = "empId") String empId) {
+	public Employee getEmployeeById(@PathVariable(name = "empId") int empId) {
 
-		return employeeDaoRef.getEmployeeById(empId);
+		return employeeDaoRef.getById(empId);
 	}
 
-	@GetMapping(value = "/getEmployeesByLocation/{user}/{location}")
-	public List<Employee> getEmployeeByLocation(@PathVariable ("user") String user,@PathVariable("location") String locationName){
-		
-		if(user.equalsIgnoreCase("admin")) {
-		List<Employee> empList=new ArrayList<Employee>();
-		empList.add(employeeDaoRef.getAdminEmployeeByLocation(locationName));
-		return empList;
-		}else {
-		return employeeDaoRef.listEmployeess();
-		}
-	}
-
-	@GetMapping(value = "/getEmployeesByDate/{user}/{date}")
-	public List<Employee> getEmployeeByDate(@PathVariable("user") String user,@PathVariable("date") String date) {
-		if (user.equalsIgnoreCase("admin")) {		
-			return employeeDaoRef.getAdminEmployeeByDate(date);
-		} else {
-			return employeeDaoRef.listEmployeess();
-		}
-	}
+//	@GetMapping(value = "/getEmployeesByLocation/{user}/{location}")
+//	public List<Employee> getEmployeeByLocation(@PathVariable ("user") String user,@PathVariable("location") String locationName){
+//		
+//		if(user.equalsIgnoreCase("admin")) {
+//		List<Employee> empList=new ArrayList<Employee>();
+//		empList.add(employeeDaoRef.getAdminEmployeeByLocation(locationName));
+//		return empList;
+//		}else {
+//		return employeeDaoRef.getAllEmployees();
+//		}
+//	}
+//
+//	@GetMapping(value = "/getEmployeesByDate/{user}/{date}")
+//	public List<Employee> getEmployeeByDate(@PathVariable("user") String user,@PathVariable("date") String date) {
+//		if (user.equalsIgnoreCase("admin")) {		
+//			return employeeDaoRef.getAdminEmployeeByDate(date);
+//		} else {
+//			return employeeDaoRef.listEmployeess();
+//		}
+//	}
 
 }
